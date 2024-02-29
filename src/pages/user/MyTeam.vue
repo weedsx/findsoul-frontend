@@ -2,7 +2,7 @@
   <!--  <van-search v-model="searchText"-->
   <!--              placeholder="请输入搜索关键词 (根据名称或描述哦~)"-->
   <!--              @search='doSearch'/>-->
-  <van-sticky :offset-top="40" >
+  <van-sticky :offset-top="40">
     <van-divider>{{ route.params.type === "CreatedTeam" ? "创建的队伍" : "加入的队伍" }}</van-divider>
   </van-sticky>
   
@@ -15,7 +15,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
-import { getMyCreatedTeam, getMyJoinedTeam, getTeamList } from "../../api/index";
+import { getMyCreatedTeam, getMyJoinedTeam } from "../../api/index";
 import { showFailToast } from "vant";
 
 let route = useRoute();
@@ -34,7 +34,7 @@ const fetchTeamList = async () => {
       res = await getMyJoinedTeam();
     }
     if (res.code === 200 && res.data?.length !== 0) {
-      teamList.value = res.data;
+      teamList.value = res.data.filter(t => t.hasJoined);
       showVanEmpty.value = false;
     } else {
       showVanEmpty.value = true;
